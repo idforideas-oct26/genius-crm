@@ -6,8 +6,16 @@ const landingService = require('../services/landingService')
  * @swagger
  * /api/landings:
  *   get:
- *     summary: Listar todas las landing pages
+ *     summary: Listar landing pages, opcionalmente filtradas por cliente
  *     tags: [Landings]
+ *     parameters:
+ *       - in: query
+ *         name: client
+ *         required: false
+ *         description: Nombre del cliente por el que se filtran las landings
+ *         schema:
+ *           type: string
+ *           example: SuenoSimple
  *     responses:
  *       200:
  *         description: Lista de landings
@@ -18,9 +26,10 @@ const landingService = require('../services/landingService')
  *               items:
  *                 $ref: '#/components/schemas/Landing'
  */
+
 router.get('/', (req, res, next) => {
   try {
-    res.json(landingService.getAllLandings())
+    res.json(landingService.getAllLandings(req.query.client))
   } catch (err) {
     next(err)
   }

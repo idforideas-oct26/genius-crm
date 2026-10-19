@@ -1,11 +1,21 @@
 const db = require('../data/db')
 const templateService = require('./templateService')
 
-function getAllLandings() {
-  return db.landings.map(landing => ({
-    ...landing,
-    leadCount: 0
-  }))
+function getAllLandings(client) {
+  const clienteBuscado = client?.trim().toLowerCase()
+
+  return db.landings
+    .filter(landing => {
+      if (!clienteBuscado) {
+        return true
+      }
+
+      return (landing.client || '').trim().toLowerCase() === clienteBuscado
+    })
+    .map(landing => ({
+      ...landing,
+      leadCount: 0
+    }))
 }
 
 function getLandingById(id) {
